@@ -6,7 +6,7 @@ commands:
   setreviveclicks:
     description: Sets the amount of clicks needed to revive a player
     usage: /<command>
-  dnboreloadconfig:
+  dbnoreloadconfig:
     description: Reloads the plugin's config
     usage: /<command>
   setbleedouttime:
