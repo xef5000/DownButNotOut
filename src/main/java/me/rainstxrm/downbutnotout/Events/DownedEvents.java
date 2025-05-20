@@ -1,5 +1,7 @@
 package me.rainstxrm.downbutnotout.Events;
 
+import me.rainstxrm.downbutnotout.CustomEvents.KOEvent;
+import me.rainstxrm.downbutnotout.CustomEvents.ReviveEvent;
 import me.rainstxrm.downbutnotout.DownButNotOut;
 import me.rainstxrm.downbutnotout.KOHandler;
 import org.bukkit.*;
@@ -38,6 +40,8 @@ public class DownedEvents implements Listener {
         double healthOnAttack = player.getHealth();
         double attackDamage = e.getDamage();
         if (healthOnAttack - attackDamage <= 0){
+            KOEvent event = new KOEvent(player);
+            Bukkit.getPluginManager().callEvent(event);
             e.setDamage(0);
             player.setHealth(20);
             KOHandler.KOPlayer(player.getUniqueId());
