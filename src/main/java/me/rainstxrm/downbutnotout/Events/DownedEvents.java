@@ -121,6 +121,19 @@ public class DownedEvents implements Listener {
     }
 
     @EventHandler
+    public void dealNoDamageWhenDowned(EntityDamageByEntityEvent e){
+        if (!(e.getDamager() instanceof Player)){
+            return;
+        }
+        Player player = (Player) e.getDamager();
+        if (!DownButNotOut.plugin.getConfig().getBoolean("attack-while-down")){
+            if (KOHandler.getDownedPlayers().contains(player.getUniqueId())){
+                e.setCancelled(true);
+            }
+        }
+    }
+
+    @EventHandler
     public void noSuffocateWhenDowned(EntityDamageEvent e){
         if (e.getEntity() instanceof Player){
             Player player = (Player) e.getEntity();
