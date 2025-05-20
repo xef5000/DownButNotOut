@@ -33,4 +33,4 @@ messages:
   clicks-left: "&6(c)"
   clicks-left-text: "&6Clicks left to revive!"
   ko-stand: "&c&l(p) IS DOWN!"
-  revive-stand: "&6%lRight click to revive!"
+  revive-stand: "&6&lRight click to revive!"
