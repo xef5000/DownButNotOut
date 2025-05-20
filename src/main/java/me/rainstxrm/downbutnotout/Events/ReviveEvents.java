@@ -91,7 +91,13 @@ public class ReviveEvents implements Listener {
             int time;
             @Override
             public void run() {
-                if (reviveClicks.get(downed) >= clicks){
+                int clicksSoFar = -1;
+                try {
+                    clicksSoFar = reviveClicks.get(downed);
+                } catch (Exception e){
+                    cancel();
+                }
+                if (clicksSoFar >= clicks){
                     reviveTimer.remove(player);
                     reviveClicks.remove(downed);
                     reviving.remove(player, downed);
@@ -100,7 +106,7 @@ public class ReviveEvents implements Listener {
                     Bukkit.getPlayer(downed).sendMessage(ChatColor.translateAlternateColorCodes('&', reviveBy));
                     Bukkit.getPlayer(downed).playSound(Bukkit.getPlayer(downed).getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1.0f, 1.8f);
 
-                    String reviveOther = DownButNotOut.plugin.getConfig().getString("messages.other").replace("(p)", Bukkit.getPlayer(downed).getDisplayName());
+                    String reviveOther = DownButNotOut.plugin.getConfig().getString("messages.revive-other").replace("(p)", Bukkit.getPlayer(downed).getDisplayName());
                     Bukkit.getPlayer(player).sendMessage(ChatColor.translateAlternateColorCodes('&', reviveOther));
                     KOHandler.revivePlayer(downed);
                     cancel();

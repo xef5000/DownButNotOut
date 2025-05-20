@@ -100,7 +100,7 @@ public class DownedEvents implements Listener {
         if (KOHandler.getDownedPlayers().contains(e.getPlayer().getUniqueId())){
             Location from = new Location(e.getFrom().getWorld(), e.getFrom().getX(), e.getFrom().getY(), e.getFrom().getZ());
             Location to = new Location(e.getFrom().getWorld(), e.getTo().getX(), e.getTo().getY(), e.getTo().getZ());
-            if (!from.equals(to)){
+            if (from.getX() != to.getX() || from.getZ() != to.getZ()){
                 e.setCancelled(true);
             }
         }
@@ -115,7 +115,7 @@ public class DownedEvents implements Listener {
         if (!DownButNotOut.plugin.getConfig().getBoolean("damage-while-down")){
             if (KOHandler.getDownedPlayers().contains(player.getUniqueId())){
                 e.setCancelled(true);
-                e.getDamager().setVelocity(player.getLocation().toVector().normalize().multiply(-4));
+                //e.getDamager().setVelocity(player.getLocation().toVector().normalize().multiply(-4));
             }
         }
     }
