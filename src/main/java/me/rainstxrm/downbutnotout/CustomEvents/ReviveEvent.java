@@ -1,6 +1,5 @@
-package me.rainstxrm.downbutnotout.Events;
+package me.rainstxrm.downbutnotout.CustomEvents;
 
-import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
