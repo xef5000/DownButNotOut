@@ -1,5 +1,6 @@
 package me.rainstxrm.downbutnotout;
 
+import me.rainstxrm.downbutnotout.Events.ReviveEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -28,6 +29,8 @@ public class KOHandler {
     public static List<UUID> getDownedPlayers() {return downedPlayers;}
 
     public static void revivePlayer(UUID pID){
+        ReviveEvent event = new ReviveEvent(pID);
+        Bukkit.getPluginManager().callEvent(event);
         Player player = Bukkit.getPlayer(pID);
         for (Entity en : player.getNearbyEntities(2,2,2)){
             if (en.hasMetadata("DownedStand") || en.hasMetadata("ReviveStand")){
