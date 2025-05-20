@@ -1,6 +1,7 @@
 name: DownButNotOut
 version: 1.0
 main: me.rainstxrm.downbutnotout.DownButNotOut
+authors: [DylCru, xef5000]
 api-version: 1.18
 commands:
   setreviveclicks:
