@@ -16,7 +16,7 @@ public final class DownButNotOut extends JavaPlugin {
     public void onEnable() {
         // Plugin startup logic
         plugin = this;
-        getServer().getPluginManager().registerEvents(new DownedEvents(), this);
+        getServer().getPluginManager().registerEvents(new DownedEvents(this), this);
         getServer().getPluginManager().registerEvents(new ReviveEvents(), this);
 
         if (getConfig().getInt("bleed-out-time") <= 0){

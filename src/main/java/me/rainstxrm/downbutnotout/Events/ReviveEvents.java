@@ -43,8 +43,11 @@ public class ReviveEvents implements Listener {
             return;
         }
 
-        downed.sendTitle(ChatColor.GREEN + player.getDisplayName() + " is reviving you!", null, 0, 40, 0);
-        player.sendMessage(ChatColor.GREEN + "You are reviving " + downed.getDisplayName());
+        String revivingBy = DownButNotOut.plugin.getConfig().getString("messages.reviving-by").replace("(p)", player.getDisplayName());
+        String revivingOther = DownButNotOut.plugin.getConfig().getString("messages.reviving-other").replace("(p)", downed.getDisplayName());
+
+        downed.sendTitle(ChatColor.translateAlternateColorCodes('&', revivingBy), null, 0, 40, 0);
+        player.sendMessage(ChatColor.translateAlternateColorCodes('&', revivingOther));
 
         reviving.put(player.getUniqueId(), downed.getUniqueId());
         reviveTimer.put(player.getUniqueId(), 20);
@@ -73,7 +76,13 @@ public class ReviveEvents implements Listener {
                 downed.playSound(downed.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1.0f, percent);
                 player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1.0f, percent);
             }
-           player.sendTitle(ChatColor.GOLD + "" + (reqClicks - clicks), ChatColor.GOLD + "Clicks left", 0, 20, 0);
+            String clicksLeft = DownButNotOut.plugin.getConfig().getString("messages.clicks-left").replace("(c)", Integer.toString(reqClicks - clicks));
+            String clicksLeftText = DownButNotOut.plugin.getConfig().getString("messages.clicks-left-text");
+            player.sendTitle(
+                    ChatColor.translateAlternateColorCodes('&', clicksLeft),
+                    ChatColor.translateAlternateColorCodes('&', clicksLeftText),
+                    0, 20, 0
+            );
         }
     }
 
@@ -87,9 +96,12 @@ public class ReviveEvents implements Listener {
                     reviveClicks.remove(downed);
                     reviving.remove(player, downed);
 
-                    Bukkit.getPlayer(downed).sendMessage(ChatColor.GREEN + "You have been revived by " + Bukkit.getPlayer(player).getDisplayName());
+                    String reviveBy = DownButNotOut.plugin.getConfig().getString("messages.revive-by").replace("(p)", Bukkit.getPlayer(player).getDisplayName());
+                    Bukkit.getPlayer(downed).sendMessage(ChatColor.translateAlternateColorCodes('&', reviveBy));
                     Bukkit.getPlayer(downed).playSound(Bukkit.getPlayer(downed).getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1.0f, 1.8f);
-                    Bukkit.getPlayer(player).sendMessage(ChatColor.GREEN + "You revived " + Bukkit.getPlayer(downed).getDisplayName() + "!");
+
+                    String reviveOther = DownButNotOut.plugin.getConfig().getString("messages.other").replace("(p)", Bukkit.getPlayer(downed).getDisplayName());
+                    Bukkit.getPlayer(player).sendMessage(ChatColor.translateAlternateColorCodes('&', reviveOther));
                     KOHandler.revivePlayer(downed);
                     cancel();
                 }

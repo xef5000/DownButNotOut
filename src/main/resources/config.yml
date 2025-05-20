@@ -12,3 +12,22 @@ damage-while-down: false
 
 # Whether to play sounds while reviving or a player is down
 play-sounds: true
+
+
+# The text found in the plugin
+# when the player goes down without a set cause "player-down-no-cause" will show
+# otherwise the message shown will be "player-down-cause" and "down-cause-*" put together
+# use & for colour codes
+# use (p) to put the players name in the message
+messages:
+  title-top: "&cYou have been downed."
+  title-bottom: "&cHopefully someone is able to revive you!"
+  bled-out: "&c(p) bled out."
+  revive-by: "&aYou have been revived by (p)!"
+  revive-other: "&aYou revived (p)!"
+  reviving-by: "&aYou are being revived by (p)!"
+  reviving-other: "&aYou are reviving (p)!"
+  clicks-left: "&6(c)"
+  clicks-left-text: "&6Clicks left to revive!"
+  ko-stand: "&c&l(p) IS DOWN!"
+  revive-stand: "&6%lRight click to revive!"

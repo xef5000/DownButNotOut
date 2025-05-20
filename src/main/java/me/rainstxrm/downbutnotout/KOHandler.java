@@ -43,18 +43,22 @@ public class KOHandler {
     }
 
     public static void spawnStand(Player player){
+        String downedText = DownButNotOut.plugin.getConfig().getString("messages.ko-stand").replace("(p)", player.getDisplayName());
+        String reviveText = DownButNotOut.plugin.getConfig().getString("messages.revive-stand").replace("(p)", player.getDisplayName());
+
+
         ArmorStand downed = (ArmorStand) player.getWorld().spawnEntity(player.getLocation().clone().add(0,-0.5,0), EntityType.ARMOR_STAND);
         downed.setVisible(false);
         downed.setCustomNameVisible(true);
         downed.setGravity(false);
-        downed.setCustomName(ChatColor.RED + "" + ChatColor.BOLD + player.getDisplayName() + " IS DOWN!");
+        downed.setCustomName(ChatColor.translateAlternateColorCodes('&', downedText));
         downed.setMetadata("DownedStand", new FixedMetadataValue(DownButNotOut.plugin, "downedstand"));
 
         ArmorStand revive = (ArmorStand) player.getWorld().spawnEntity(downed.getLocation().clone().add(0,-0.25,0), EntityType.ARMOR_STAND);
         revive.setVisible(false);
         revive.setGravity(false);
         revive.setCustomNameVisible(true);
-        revive.setCustomName(ChatColor.GOLD + "" + ChatColor.BOLD + "Right click to revive!");
+        revive.setCustomName(ChatColor.translateAlternateColorCodes('&', reviveText));
         revive.setMetadata("ReviveStand", new FixedMetadataValue(DownButNotOut.plugin, "Revivestand"));
     }
     public static void playerCountDown(Player player){
