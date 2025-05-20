@@ -1,8 +1,17 @@
 # DBNO (Down But Not Out)
 A Minecraft plugin that adds player KO'ing into the game
 
-Download it here at:
+![image](https://github.com/user-attachments/assets/2a71b495-cc50-400b-965d-76f27fcb872d)
+
+Original download page:
 https://www.spigotmc.org/resources/dbno-down-but-not-out.100654/
+
+# Commands
+- `/setreviveclicks [amt]` - Sets the needed amount of clicks to revive a player
+- `/dbnoreloadconfig` - Reload the config
+- `/setbleedouttime [time]` - Sets the amount of time (in seconds) before the player bleeds out (dies)
+- `/reviveplayer [player]` - Revives a knocked out player
+- `/removedbnostands` - Removes plugin related armorstands
 
 # Fork modifications
 - More configuration in the config
