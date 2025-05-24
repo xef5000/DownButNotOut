@@ -19,6 +19,10 @@ public class ReviveEvent extends Event {
         return handlers;
     }
 
+    public static HandlerList getHandlerList() {
+        return handlers;
+    }
+
     public UUID getPlayer() {
         return player;
     }
