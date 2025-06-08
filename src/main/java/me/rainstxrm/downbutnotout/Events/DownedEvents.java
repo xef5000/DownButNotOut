@@ -1,15 +1,19 @@
 package me.rainstxrm.downbutnotout.Events;
 
 import me.rainstxrm.downbutnotout.CustomEvents.KOEvent;
-import me.rainstxrm.downbutnotout.CustomEvents.ReviveEvent;
 import me.rainstxrm.downbutnotout.DownButNotOut;
 import me.rainstxrm.downbutnotout.KOHandler;
-import org.bukkit.*;
-import org.bukkit.entity.Entity;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.Location;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.entity.*;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityToggleSwimEvent;
+import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 
 import java.util.UUID;
@@ -30,7 +34,7 @@ public class DownedEvents implements Listener {
             }
             Player player = (Player) e.getEntity();
 
-            if (KOHandler.getDownedPlayers().contains(player.getUniqueId())){
+            if (KOHandler.getDownedPlayers().contains(plugin.getPlayerUUID(player))){
                 return;
             }
 
@@ -46,7 +50,7 @@ public class DownedEvents implements Listener {
             Bukkit.getPluginManager().callEvent(event);
             e.setDamage(0);
             player.setHealth(20);
-            KOHandler.KOPlayer(player.getUniqueId());
+            KOHandler.KOPlayer(plugin.getPlayerUUID(player));
             KOHandler.spawnStand(player);
             String titleTop = plugin.getConfig().getString("messages.title-top").replace("(p)", player.getDisplayName());
             String titleBottom = plugin.getConfig().getString("messages.title-bottom").replace("(p)", player.getDisplayName());
@@ -73,7 +77,7 @@ public class DownedEvents implements Listener {
                 return;
             }
 
-            if (KOHandler.getDownedPlayers().contains(player.getUniqueId())){
+            if (KOHandler.getDownedPlayers().contains(plugin.getPlayerUUID(player))){
                 return;
             }
 
@@ -84,7 +88,7 @@ public class DownedEvents implements Listener {
     @EventHandler
     public void unKOPlayer(PlayerDeathEvent e){
         Player player = e.getEntity();
-        UUID playerID = player.getUniqueId();
+        UUID playerID = plugin.getPlayerUUID(player);
         if (KOHandler.getDownedPlayers().contains(playerID)) {
             String bledOut = plugin.getConfig().getString("messages.bled-out").replace("(p)", player.getDisplayName());
             e.setDeathMessage(ChatColor.translateAlternateColorCodes('&', bledOut));
@@ -98,7 +102,7 @@ public class DownedEvents implements Listener {
 
     @EventHandler
     public void noMoveWhenDowned(PlayerMoveEvent e){
-        if (KOHandler.getDownedPlayers().contains(e.getPlayer().getUniqueId())){
+        if (KOHandler.getDownedPlayers().contains(plugin.getPlayerUUID(e.getPlayer()))){
             Location from = new Location(e.getFrom().getWorld(), e.getFrom().getX(), e.getFrom().getY(), e.getFrom().getZ());
             Location to = new Location(e.getFrom().getWorld(), e.getTo().getX(), e.getTo().getY(), e.getTo().getZ());
             if (from.getX() != to.getX() || from.getZ() != to.getZ()){
@@ -114,7 +118,7 @@ public class DownedEvents implements Listener {
         }
         Player player = (Player) e.getEntity();
         if (!DownButNotOut.plugin.getConfig().getBoolean("damage-while-down")){
-            if (KOHandler.getDownedPlayers().contains(player.getUniqueId())){
+            if (KOHandler.getDownedPlayers().contains(plugin.getPlayerUUID(player))){
                 e.setCancelled(true);
                 //e.getDamager().setVelocity(player.getLocation().toVector().normalize().multiply(-4));
             }
@@ -128,7 +132,7 @@ public class DownedEvents implements Listener {
         }
         Player player = (Player) e.getDamager();
         if (!DownButNotOut.plugin.getConfig().getBoolean("attack-while-down")){
-            if (KOHandler.getDownedPlayers().contains(player.getUniqueId())){
+            if (KOHandler.getDownedPlayers().contains(plugin.getPlayerUUID(player))){
                 e.setCancelled(true);
             }
         }
@@ -139,7 +143,7 @@ public class DownedEvents implements Listener {
         if (e.getEntity() instanceof Player){
             Player player = (Player) e.getEntity();
             if (e.getCause().equals(EntityDamageEvent.DamageCause.SUFFOCATION)){
-                if (KOHandler.getDownedPlayers().contains(player.getUniqueId())){
+                if (KOHandler.getDownedPlayers().contains(plugin.getPlayerUUID(player))){
                     e.setCancelled(true);
                 }
             }
@@ -151,7 +155,7 @@ public class DownedEvents implements Listener {
         if (!(e.getEntity() instanceof Player))
             return;
         Player player = (Player)e.getEntity();
-        if (KOHandler.getDownedPlayers().contains(player.getUniqueId()) &&
+        if (KOHandler.getDownedPlayers().contains(plugin.getPlayerUUID(player)) &&
                 player.isSwimming())
             e.setCancelled(true);
     }

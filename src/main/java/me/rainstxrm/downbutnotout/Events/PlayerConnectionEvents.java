@@ -29,7 +29,7 @@ public class PlayerConnectionEvents implements Listener {
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent event) {
         Player player = event.getPlayer();
-        UUID playerID = player.getUniqueId();
+        UUID playerID = DownButNotOut.plugin.getPlayerUUID(player);
 
         // If the player is downed when they disconnect
         if (KOHandler.getDownedPlayers().contains(playerID)) {
@@ -54,7 +54,7 @@ public class PlayerConnectionEvents implements Listener {
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
-        UUID playerID = player.getUniqueId();
+        UUID playerID = DownButNotOut.plugin.getPlayerUUID(player);
 
         // Check if this player was downed when they disconnected
         if (disconnectedDownedPlayers.containsKey(playerID) && disconnectedDownedPlayers.get(playerID)) {

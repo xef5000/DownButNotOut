@@ -1,6 +1,5 @@
 package me.rainstxrm.downbutnotout.Events;
 
-import com.google.common.eventbus.AllowConcurrentEvents;
 import me.rainstxrm.downbutnotout.DownButNotOut;
 import me.rainstxrm.downbutnotout.KOHandler;
 import org.bukkit.Bukkit;
@@ -15,9 +14,7 @@ import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.UUID;
 
 public class ReviveEvents implements Listener {
@@ -35,11 +32,13 @@ public class ReviveEvents implements Listener {
         }
         Player player = e.getPlayer();
         Player downed = (Player) e.getRightClicked();
+        UUID playerID = DownButNotOut.plugin.getPlayerUUID(player);
+        UUID downedID = DownButNotOut.plugin.getPlayerUUID(downed);
 
-        if (!KOHandler.getDownedPlayers().contains(downed.getUniqueId()) || KOHandler.getDownedPlayers().contains(player.getUniqueId())){
+        if (!KOHandler.getDownedPlayers().contains(downedID) || KOHandler.getDownedPlayers().contains(playerID)){
             return;
         }
-        if (reviving.containsKey(player.getUniqueId()) || reviving.containsValue(downed.getUniqueId())){
+        if (reviving.containsKey(playerID) || reviving.containsValue(downedID)){
             return;
         }
 
@@ -49,10 +48,10 @@ public class ReviveEvents implements Listener {
         downed.sendTitle(ChatColor.translateAlternateColorCodes('&', revivingBy), null, 0, 40, 0);
         player.sendMessage(ChatColor.translateAlternateColorCodes('&', revivingOther));
 
-        reviving.put(player.getUniqueId(), downed.getUniqueId());
-        reviveTimer.put(player.getUniqueId(), 20);
-        reviveClicks.put(downed.getUniqueId(), 0);
-        revival(player.getUniqueId(), downed.getUniqueId(), DownButNotOut.plugin.getConfig().getInt("clicks-to-revive"));
+        reviving.put(playerID, downedID);
+        reviveTimer.put(playerID, 20);
+        reviveClicks.put(downedID, 0);
+        revival(playerID, downedID, DownButNotOut.plugin.getConfig().getInt("clicks-to-revive"));
     }
 
     @EventHandler
@@ -66,13 +65,13 @@ public class ReviveEvents implements Listener {
         if (!e.getHand().equals(EquipmentSlot.HAND)){
             return;
         }
-        if (reviving.containsKey(player.getUniqueId()) || reviving.containsValue(downed.getUniqueId())){
-           reviveTimer.replace(player.getUniqueId(), 20);
-           int clicks = reviveClicks.get(downed.getUniqueId()) + 1;
-           reviveClicks.replace(downed.getUniqueId(), clicks);
+        if (reviving.containsKey(DownButNotOut.plugin.getPlayerUUID(player)) || reviving.containsValue(DownButNotOut.plugin.getPlayerUUID(downed))){
+           reviveTimer.replace(DownButNotOut.plugin.getPlayerUUID(player), 20);
+           int clicks = reviveClicks.get(DownButNotOut.plugin.getPlayerUUID(downed)) + 1;
+           reviveClicks.replace(DownButNotOut.plugin.getPlayerUUID(downed), clicks);
 
             if (DownButNotOut.plugin.getConfig().getBoolean("play-sounds")){
-                float percent = (reviveClicks.get(downed.getUniqueId()).floatValue() / reqClicks) * 2;
+                float percent = (reviveClicks.get(DownButNotOut.plugin.getPlayerUUID(downed)).floatValue() / reqClicks) * 2;
                 downed.playSound(downed.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1.0f, percent);
                 player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1.0f, percent);
             }

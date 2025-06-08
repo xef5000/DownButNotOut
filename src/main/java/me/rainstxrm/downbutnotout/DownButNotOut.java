@@ -5,7 +5,10 @@ import me.rainstxrm.downbutnotout.Events.DownedEvents;
 import me.rainstxrm.downbutnotout.Events.PlayerConnectionEvents;
 import me.rainstxrm.downbutnotout.Events.ReviveEvents;
 import me.rainstxrm.downbutnotout.Events.StopArmourStandClicks;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
+import xyz.haoshoku.nick.api.NickAPI;
 
 import java.util.UUID;
 import java.util.logging.Level;
@@ -13,6 +16,7 @@ import java.util.logging.Level;
 public final class DownButNotOut extends JavaPlugin {
 
     public static DownButNotOut plugin;
+    public static boolean nickAPIEnabled = false;
 
 
     @Override
@@ -38,6 +42,11 @@ public final class DownButNotOut extends JavaPlugin {
         getCommand("setbleedouttime").setExecutor(new SetBleedOutTime());
         getCommand("reviveplayer").setExecutor(new RevivePlayer());
         getCommand("removedbnostands").setExecutor(new RemoveStands());
+
+        if (getServer().getPluginManager().getPlugin("NickAPI") != null) {
+            nickAPIEnabled = true;
+            getLogger().log(Level.INFO, "NickAPI has been detected! Enabling nick support!");
+        }
     }
 
     @Override
@@ -56,5 +65,13 @@ public final class DownButNotOut extends JavaPlugin {
         }
 
         getLogger().log(Level.INFO, "DBNO has been disabled!");
+    }
+
+    public UUID getPlayerUUID(Player player) {
+        if (nickAPIEnabled) {
+            return NickAPI.getUniqueId(player);
+        } else {
+            return player.getUniqueId();
+        }
     }
 }

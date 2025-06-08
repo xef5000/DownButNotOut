@@ -97,14 +97,14 @@ public class KOHandler {
         armorStands.add(revive.getUniqueId());
 
         // Store the list of armor stand UUIDs for this player
-        playerArmorStands.put(player.getUniqueId(), armorStands);
+        playerArmorStands.put(DownButNotOut.plugin.getPlayerUUID(player), armorStands);
     }
     public static void playerCountDown(Player player){
         new BukkitRunnable(){
             int timer = DownButNotOut.plugin.getConfig().getInt("bleed-out-time");
             @Override
             public void run() {
-                if(!getDownedPlayers().contains(player.getUniqueId())){
+                if(!getDownedPlayers().contains(DownButNotOut.plugin.getPlayerUUID(player))){
                     cancel();
                 }
 
@@ -115,7 +115,7 @@ public class KOHandler {
                 }
 
                 if (timer == 0){
-                    if (getDownedPlayers().contains(player.getUniqueId())){
+                    if (getDownedPlayers().contains(DownButNotOut.plugin.getPlayerUUID(player))){
                         player.setHealth(0);
                     }
                     cancel();
