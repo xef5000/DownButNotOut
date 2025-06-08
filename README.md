@@ -19,6 +19,8 @@ https://www.spigotmc.org/resources/dbno-down-but-not-out.100654/
 - Updated the source code to reflect update 1.1 (1.1 is available to download on spigot, but source code is unavailable)
 - General bugfix
 - Removed damage causes
+- Persistent data when players log out while they're KO
+- NickAPI support
 
 ## New config
 ```yaml
