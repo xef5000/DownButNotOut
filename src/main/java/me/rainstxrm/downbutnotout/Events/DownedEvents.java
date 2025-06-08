@@ -12,6 +12,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.*;
 import org.bukkit.event.player.PlayerMoveEvent;
 
+import java.util.UUID;
+
 public class DownedEvents implements Listener {
 
     private final DownButNotOut plugin;
@@ -82,16 +84,15 @@ public class DownedEvents implements Listener {
     @EventHandler
     public void unKOPlayer(PlayerDeathEvent e){
         Player player = e.getEntity();
-        if (KOHandler.getDownedPlayers().contains(e.getEntity().getUniqueId())) {
+        UUID playerID = player.getUniqueId();
+        if (KOHandler.getDownedPlayers().contains(playerID)) {
             String bledOut = plugin.getConfig().getString("messages.bled-out").replace("(p)", player.getDisplayName());
             e.setDeathMessage(ChatColor.translateAlternateColorCodes('&', bledOut));
-            for (Entity en : player.getNearbyEntities(2,2,2)){
-                if (en.hasMetadata("DownedStand") || en.hasMetadata("ReviveStand")){
-                    en.remove();
-                }
-            }
 
-            KOHandler.removePlayer(player.getUniqueId());
+            // Use the KOHandler to remove armor stands
+            KOHandler.removeArmorStands(playerID);
+
+            KOHandler.removePlayer(playerID);
         }
     }
 
