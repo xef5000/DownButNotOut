@@ -68,6 +68,10 @@ public class DownedEvents implements Listener {
     @EventHandler
     public void onDamageWithNoCause(EntityDamageEvent e){
         if (DownButNotOut.plugin.getConfig().getBoolean("enable-downs")){
+            if (e == null || e.getEntity() == null || e.getCause() == null) {
+                return;
+            }
+
             if (!(e.getEntity() instanceof Player)){
                 return;
             }
